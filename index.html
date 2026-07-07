@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>เกมอุปกรณ์คอมพิวเตอร์ ป.2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap');
+
+*{box-sizing:border-box}
+:root{
+  --pink:#f9a8d4;
+  --rose:#be185d;
+  --blue:#93c5fd;
+  --green:#86efac;
+  --yellow:#fef3c7;
+  --text:#334155;
+  --muted:#64748b;
+}
+body{
+  margin:0;
+  font-family:'Mali',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 12% 14%,rgba(255,255,255,.85) 0 7%,transparent 8%),
+    radial-gradient(circle at 88% 16%,rgba(255,255,255,.7) 0 6%,transparent 7%),
+    linear-gradient(135deg,#fff7ed,#fce7f3,#e0f2fe,#dcfce7);
+}
+.hidden{display:none!important}
+.page{
+  min-height:100vh;
+  padding:20px;
+}
+.panel{
+  width:min(1120px,100%);
+  min-height:calc(100vh - 40px);
+  margin:auto;
+  background:rgba(255,255,255,.92);
+  border:4px solid #fff;
+  border-radius:38px;
+  box-shadow:0 28px 70px rgba(120,80,130,.18);
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+.panel:before{
+  content:"";
+  position:absolute;
+  width:240px;height:240px;
+  border-radius:50%;
+  right:-90px;top:-90px;
+  background:rgba(255,255,255,.55);
+}
+.panel:after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  border-radius:50%;
+  left:-70px;bottom:-70px;
+  background:rgba(255,255,255,.55);
+}
+.content{position:relative;z-index:1}
+
+/* LOGIN */
+.login-layout{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:24px;
+  align-items:center;
+  min-height:calc(100vh - 96px);
+}
+.hero{
+  background:linear-gradient(145deg,#fff1f2,#eff6ff,#ecfdf5);
+  border:3px solid #fff;
+  border-radius:34px;
+  padding:32px;
+  min-height:560px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.badge{
+  display:inline-block;
+  width:max-content;
+  max-width:100%;
+  background:#fff;
+  color:#ec4899;
+  padding:9px 18px;
+  border-radius:999px;
+  font-weight:700;
+  box-shadow:0 10px 24px rgba(236,72,153,.12);
+}
+.hero h1{
+  font-size:clamp(34px,5vw,58px);
+  line-height:1.15;
+  margin:18px 0 12px;
+  color:var(--rose);
+}
+.hero p{
+  margin:4px 0;
+  color:var(--muted);
+  font-size:20px;
+}
+.icons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:26px;
+}
+.icon-pill{
+  background:#fff;
+  border-radius:24px;
+  padding:13px 18px;
+  font-size:36px;
+  box-shadow:0 10px 24px rgba(148,163,184,.15);
+}
+.teacher-box{
+  margin-top:26px;
+  background:rgba(255,255,255,.75);
+  border:2px dashed var(--pink);
+  border-radius:28px;
+  padding:18px;
+  line-height:1.65;
+}
+.teacher-name{
+  font-size:22px;
+  font-weight:700;
+  color:var(--rose);
+}
+.login-card{
+  background:#fff;
+  border:3px solid #fff;
+  border-radius:34px;
+  padding:30px;
+  box-shadow:0 16px 36px rgba(148,163,184,.18);
+}
+.login-card h2{
+  margin:0 0 8px;
+  font-size:32px;
+  color:var(--text);
+}
+.hint{margin:0 0 22px;color:var(--muted)}
+label{
+  display:block;
+  font-weight:700;
+  margin:14px 0 8px;
+}
+input{
+  width:100%;
+  border:3px solid #dbeafe;
+  border-radius:20px;
+  padding:14px 16px;
+  font-family:inherit;
+  font-size:19px;
+  outline:none;
+  background:#f8fbff;
+}
+input:focus{border-color:var(--pink);background:#fff}
+.start-btn,.reset-btn,.home-btn{
+  border:0;
+  border-radius:999px;
+  padding:14px 22px;
+  font-family:inherit;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+}
+.start-btn{
+  width:100%;
+  margin-top:18px;
+  padding:17px 20px;
+  font-size:22px;
+  background:linear-gradient(135deg,#f9a8d4,#93c5fd,#86efac);
+  color:#334155;
+  box-shadow:0 12px 0 rgba(148,163,184,.22);
+}
+.notice{
+  margin-top:14px;
+  text-align:center;
+  background:#fff7ed;
+  color:#9a3412;
+  border-radius:20px;
+  padding:12px;
+  font-weight:700;
+}
+
+/* GAME */
+.game-wrap{
+  height:calc(100vh - 40px);
+  display:grid;
+  grid-template-rows:auto auto 1fr auto;
+  gap:12px;
+}
+.game-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  background:rgba(255,255,255,.9);
+  border:3px solid #fff;
+  border-radius:28px;
+  padding:14px 20px;
+  box-shadow:0 14px 35px rgba(120,80,130,.12);
+}
+.game-header h1{
+  margin:0;
+  color:var(--rose);
+  font-size:28px;
+}
+.game-header p{margin:3px 0 0;color:var(--muted);font-size:14px}
+.player-box{
+  text-align:right;
+  font-size:14px;
+  line-height:1.5;
+}
+.player-box b{color:var(--rose)}
+.device-menu{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:10px;
+}
+.device-btn{
+  border:3px solid #fff;
+  border-radius:24px;
+  background:rgba(255,255,255,.92);
+  padding:11px 8px;
+  font-family:inherit;
+  cursor:pointer;
+  box-shadow:0 9px 0 rgba(148,163,184,.18),0 12px 22px rgba(148,163,184,.12);
+}
+.device-btn:hover{transform:translateY(-2px)}
+.device-btn.active{outline:4px solid #f472b6;background:#fff1f2}
+.device-btn.done{background:#dcfce7}
+.dev-icon{font-size:40px;display:block;line-height:1}
+.dev-name{display:block;font-size:15px;font-weight:700;margin-top:3px}
+.game-main{
+  min-height:0;
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:14px;
+}
+.card{
+  background:rgba(255,255,255,.92);
+  border:3px solid #fff;
+  border-radius:32px;
+  padding:20px;
+  box-shadow:0 14px 34px rgba(148,163,184,.14);
+}
+.big-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:linear-gradient(145deg,#fff1f2,#eff6ff,#ecfdf5);
+}
+.big-emoji{font-size:130px;line-height:1}
+.big-card h2{
+  font-size:38px;
+  margin:10px 0 4px;
+  color:var(--rose);
+}
+.big-card p{font-size:18px;color:var(--muted);margin:0}
+.quiz{
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:12px;
+}
+.quiz-title{
+  text-align:center;
+  background:var(--yellow);
+  border-radius:22px;
+  padding:10px;
+  font-size:20px;
+  font-weight:700;
+  color:#92400e;
+}
+.questions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.qbox{
+  border-radius:26px;
+  padding:15px;
+  border:3px dashed var(--pink);
+  background:#fffafc;
+}
+.qbox.type{border-color:var(--blue);background:#f7fbff}
+.qbox h3{margin:0 0 11px;text-align:center;font-size:21px}
+.options{display:grid;gap:10px}
+.opt{
+  border:0;
+  border-radius:20px;
+  padding:12px;
+  font-family:inherit;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  background:#fff;
+  color:var(--text);
+  box-shadow:0 6px 0 rgba(148,163,184,.18);
+}
+.opt:hover{transform:translateY(-1px)}
+.opt.correct{
+  background:#dcfce7!important;
+  color:#166534!important;
+  box-shadow:0 6px 0 rgba(134,239,172,.5)!important;
+}
+.opt.wrong{
+  background:#fee2e2!important;
+  color:#991b1b!important;
+  box-shadow:0 6px 0 rgba(252,165,165,.55)!important;
+}
+.feedback{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:#fff;
+  border-radius:24px;
+  font-size:22px;
+  font-weight:700;
+  color:var(--muted);
+}
+.footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  background:rgba(255,255,255,.92);
+  border:3px solid #fff;
+  border-radius:26px;
+  padding:11px 18px;
+}
+.score{font-size:22px;font-weight:700;color:#92400e}
+.reset-btn{background:#a7f3d0;color:#065f46}
+.home-btn{background:#bfdbfe;color:#1e3a8a}
+.win{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(8px);
+  z-index:10;
+}
+.winbox{
+  width:min(620px,90%);
+  background:linear-gradient(135deg,#fff7ad,#ffd6e7,#dff7ff);
+  border:5px solid #fff;
+  border-radius:40px;
+  text-align:center;
+  padding:40px;
+  box-shadow:0 28px 70px rgba(120,80,130,.22);
+}
+.winbox h2{font-size:44px;margin:0;color:var(--rose)}
+.winbox p{font-size:24px;font-weight:700}
+@media(max-width:950px){
+  .login-layout{grid-template-columns:1fr}
+  .game-wrap{height:auto;min-height:100vh}
+  .game-header{flex-direction:column;text-align:center}
+  .player-box{text-align:center}
+  .device-menu{grid-template-columns:repeat(2,1fr)}
+  .game-main{grid-template-columns:1fr}
+  .questions{grid-template-columns:1fr}
+  body{overflow:auto}
+}
+</style>
+</head>
+<body>
+
+<section id="loginPage" class="page">
+  <div class="panel">
+    <div class="content login-layout">
+      <div class="hero">
+        <span class="badge">🌸 สื่อการเรียนรู้วิชาคอมพิวเตอร์ ป.2</span>
+        <h1>เกมอุปกรณ์<br>คอมพิวเตอร์</h1>
+        <p>เรียนรู้ความสัมพันธ์ของ</p>
+        <p><b>อุปกรณ์ → หน้าที่ → ประเภท</b></p>
+        <div class="icons">
+          <div class="icon-pill">🖱️</div>
+          <div class="icon-pill">⌨️</div>
+          <div class="icon-pill">🖥️</div>
+          <div class="icon-pill">🖨️</div>
+          <div class="icon-pill">🔊</div>
+        </div>
+        <div class="teacher-box">
+          <div>ครูผู้สอน</div>
+          <div class="teacher-name">นางสาววิภาพร ป้อมกระโทก</div>
+          <div>ครู วิทยฐานะครูชำนาญการ</div>
+          <div>โรงเรียนวัดเกาะสุวรรณาราม</div>
+          <div>สำนักงานเขตสายไหม กรุงเทพมหานคร</div>
+        </div>
+      </div>
+
+      <div class="login-card">
+        <h2>ลงชื่อเข้าใช้</h2>
+        <p class="hint">กรอกชื่อและชั้นก่อนเริ่มเล่นเกมค่ะ</p>
+        <label for="studentName">ชื่อ-สกุล</label>
+        <input id="studentName" type="text" placeholder="เช่น ด.ช. ภูมิ / ด.ญ. ใบเตย">
+        <label for="studentClass">ชั้น</label>
+        <input id="studentClass" type="text" placeholder="เช่น ป.2/1">
+        <button class="start-btn" onclick="startGame()">🌟 เริ่มเล่นเกม</button>
+        <div class="notice" id="notice">กรอกข้อมูลแล้วกดเริ่มเล่นเกมได้เลยค่ะ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gamePage" class="page hidden">
+  <div class="game-wrap">
+    <div class="game-header">
+      <div>
+        <h1>🎮 เกมอุปกรณ์คอมพิวเตอร์ ป.2</h1>
+        <p>กดเลือกอุปกรณ์ → ตอบหน้าที่ → ตอบประเภท | ถูก = สีเขียว | ผิด = สีแดง</p>
+      </div>
+      <div class="player-box">
+        <div><b>ผู้เล่น:</b> <span id="playerName">-</span></div>
+        <div><b>ครูผู้สอน:</b> นางสาววิภาพร ป้อมกระโทก</div>
+      </div>
+    </div>
+
+    <div class="device-menu" id="deviceMenu"></div>
+
+    <div class="game-main">
+      <div class="card big-card">
+        <div class="big-emoji" id="mainIcon">🖱️</div>
+        <h2 id="mainName">เมาส์</h2>
+        <p>เลือกคำตอบด้านขวาให้ครบ 2 ข้อค่ะ</p>
+      </div>
+
+      <div class="card quiz">
+        <div class="quiz-title" id="quizTitle">อุปกรณ์นี้คือ “เมาส์”</div>
+        <div class="questions">
+          <div class="qbox">
+            <h3>1) หน้าที่คืออะไร?</h3>
+            <div class="options" id="functionOptions"></div>
+          </div>
+          <div class="qbox type">
+            <h3>2) เป็นอุปกรณ์ประเภทใด?</h3>
+            <div class="options" id="typeOptions"></div>
+          </div>
+        </div>
+        <div class="feedback" id="feedback">เลือกคำตอบได้เลยค่ะ 🌸</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="score" id="score">⭐ คะแนน 0/12</div>
+      <div>
+        <button class="home-btn" onclick="backHome()">กลับหน้าแรก</button>
+        <button class="reset-btn" onclick="resetGame()">เริ่มใหม่</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="win" id="win">
+  <div class="winbox">
+    <h2>🏆 เก่งมาก!</h2>
+    <p>คุณคือนักคอมพิวเตอร์ตัวน้อย</p>
+    <p id="finalScore">คะแนน 12/12 ⭐</p>
+    <button class="reset-btn" onclick="resetGame()">เล่นอีกครั้ง</button>
+  </div>
+</div>
+
+<script>
+const data = [
+  {id:'mouse', icon:'🖱️', name:'เมาส์', fn:'ใช้คลิกและเลือกคำสั่ง', type:'อุปกรณ์รับเข้า',
+   fWrong:['ใช้พิมพ์เอกสาร','ใช้ส่งเสียง'], tWrong:['อุปกรณ์แสดงผล','อุปกรณ์ประมวลผล']},
+  {id:'keyboard', icon:'⌨️', name:'แป้นพิมพ์', fn:'ใช้พิมพ์ข้อความและตัวเลข', type:'อุปกรณ์รับเข้า',
+   fWrong:['แสดงภาพ','ประมวลผลข้อมูล'], tWrong:['อุปกรณ์แสดงผล','อุปกรณ์ประมวลผล']},
+  {id:'cpu', icon:'🖥️', name:'CPU', fn:'ประมวลผลและควบคุมการทำงาน', type:'อุปกรณ์ประมวลผล',
+   fWrong:['ใช้คลิกเลือกคำสั่ง','พิมพ์เอกสาร'], tWrong:['อุปกรณ์รับเข้า','อุปกรณ์แสดงผล']},
+  {id:'monitor', icon:'🖥️', name:'จอภาพ', fn:'แสดงภาพและข้อความ', type:'อุปกรณ์แสดงผล',
+   fWrong:['รับเสียง','ใช้พิมพ์ข้อความ'], tWrong:['อุปกรณ์รับเข้า','อุปกรณ์ประมวลผล']},
+  {id:'printer', icon:'🖨️', name:'เครื่องพิมพ์', fn:'พิมพ์เอกสารออกทางกระดาษ', type:'อุปกรณ์แสดงผล',
+   fWrong:['ใช้คลิกและเลือกคำสั่ง','ประมวลผลข้อมูล'], tWrong:['อุปกรณ์รับเข้า','อุปกรณ์ประมวลผล']},
+  {id:'speaker', icon:'🔊', name:'ลำโพง', fn:'ส่งเสียงออกจากคอมพิวเตอร์', type:'อุปกรณ์แสดงผล',
+   fWrong:['รับเสียงเข้าสู่คอมพิวเตอร์','ใช้พิมพ์ข้อความ'], tWrong:['อุปกรณ์รับเข้า','อุปกรณ์ประมวลผล']}
+];
+
+let current = 0;
+let score = 0;
+let answered = {};
+
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+
+function startGame(){
+  const name = document.getElementById('studentName').value.trim();
+  const room = document.getElementById('studentClass').value.trim();
+  if(!name){
+    document.getElementById('notice').textContent = 'กรุณากรอกชื่อ-สกุลก่อนนะคะ 🌷';
+    document.getElementById('studentName').focus();
+    return;
+  }
+  document.getElementById('playerName').textContent = name + (room ? ' | ' + room : '');
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('gamePage').classList.remove('hidden');
+  resetGame(false);
+}
+
+function backHome(){
+  document.getElementById('gamePage').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
+}
+
+function isDone(id){return answered[id+'_fn'] && answered[id+'_type'];}
+
+function renderDevices(){
+  document.getElementById('deviceMenu').innerHTML = data.map((d,i)=>`
+    <button class="device-btn ${i===current?'active':''} ${isDone(d.id)?'done':''}" onclick="selectDevice(${i})">
+      <span class="dev-icon">${d.icon}</span>
+      <span class="dev-name">${d.name}</span>
+    </button>`).join('');
+}
+
+function selectDevice(i){
+  current = i;
+  const d = data[current];
+  document.getElementById('mainIcon').textContent = d.icon;
+  document.getElementById('mainName').textContent = d.name;
+  document.getElementById('quizTitle').textContent = 'อุปกรณ์นี้คือ “' + d.name + '”';
+  document.getElementById('feedback').textContent = 'เลือกคำตอบได้เลยค่ะ 🌸';
+  document.getElementById('feedback').style.color = '#64748b';
+
+  const fOpts = shuffle([d.fn,...d.fWrong]);
+  const tOpts = shuffle([d.type,...d.tWrong]);
+
+  document.getElementById('functionOptions').innerHTML = fOpts.map(x =>
+    `<button class="opt" onclick="check(this,'${d.id}_fn',${x===d.fn})">${x}</button>`
+  ).join('');
+
+  document.getElementById('typeOptions').innerHTML = tOpts.map(x =>
+    `<button class="opt" onclick="check(this,'${d.id}_type',${x===d.type})">${x}</button>`
+  ).join('');
+
+  renderDevices();
+}
+
+function check(btn,key,ok){
+  const group = btn.parentElement.querySelectorAll('button');
+  group.forEach(b=>b.classList.remove('correct','wrong'));
+
+  if(ok){
+    btn.classList.add('correct');
+    if(!answered[key]){
+      answered[key] = true;
+      score++;
+      document.getElementById('score').textContent = `⭐ คะแนน ${score}/12`;
+    }
+    document.getElementById('feedback').textContent = '✅ ถูกต้องค่ะ เก่งมาก!';
+    document.getElementById('feedback').style.color = '#166534';
+    renderDevices();
+
+    if(score === 12){
+      document.getElementById('finalScore').textContent = 'คะแนน 12/12 ⭐⭐⭐';
+      document.getElementById('win').style.display = 'flex';
+    }
+  }else{
+    btn.classList.add('wrong');
+    document.getElementById('feedback').textContent = '❌ ผิดค่ะ ลองใหม่อีกครั้ง';
+    document.getElementById('feedback').style.color = '#991b1b';
+  }
+}
+
+function resetGame(refresh=true){
+  score = 0;
+  answered = {};
+  current = 0;
+  document.getElementById('score').textContent = '⭐ คะแนน 0/12';
+  document.getElementById('win').style.display = 'none';
+  selectDevice(0);
+}
+
+renderDevices();
+selectDevice(0);
+</script>
+</body>
+</html>
