@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>เกมจับคู่อุปกรณ์คอมพิวเตอร์ ป.2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap');
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Mali', cursive, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,.9) 0 8%, transparent 9%),
+    radial-gradient(circle at 88% 18%, rgba(255,255,255,.75) 0 7%, transparent 8%),
+    linear-gradient(135deg,#fff7ed,#fce7f3,#e0f2fe,#dcfce7);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  color:#4b5563;
+}
+.app{
+  width:min(1120px,100%);
+  background:rgba(255,255,255,.9);
+  border:4px solid #fff;
+  border-radius:40px;
+  box-shadow:0 28px 70px rgba(120,80,130,.20);
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+}
+.app:before,.app:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.58);
+  z-index:0;
+}
+.app:before{width:240px;height:240px;right:-90px;top:-90px}
+.app:after{width:190px;height:190px;left:-75px;bottom:-75px}
+.content{position:relative;z-index:1}
+.hidden{display:none!important}
+
+/* LOGIN */
+.login-card{
+  min-height:640px;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:24px;
+  align-items:center;
+}
+.hero{
+  padding:32px;
+  border-radius:34px;
+  background:linear-gradient(145deg,#fff1f2,#eff6ff,#ecfdf5);
+  border:3px solid #fff;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.55);
+  min-height:560px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero:before{
+  content:"✨";
+  position:absolute;
+  font-size:70px;
+  right:28px;
+  top:22px;
+  opacity:.5;
+}
+.school-badge{
+  width:max-content;
+  max-width:100%;
+  background:#fff;
+  color:#ec4899;
+  padding:10px 20px;
+  border-radius:999px;
+  font-weight:700;
+  box-shadow:0 10px 24px rgba(236,72,153,.12);
+}
+.hero h1{
+  margin:18px 0 10px;
+  font-size:clamp(32px,5vw,56px);
+  line-height:1.15;
+  color:#334155;
+}
+.hero p{
+  font-size:20px;
+  margin:8px 0;
+  color:#64748b;
+}
+.device-row{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+.device-pill{
+  background:#fff;
+  padding:14px 18px;
+  border-radius:22px;
+  font-size:34px;
+  box-shadow:0 10px 24px rgba(148,163,184,.15);
+}
+.teacher-box{
+  margin-top:28px;
+  background:rgba(255,255,255,.72);
+  border:2px dashed #f9a8d4;
+  border-radius:28px;
+  padding:18px;
+  color:#475569;
+}
+.teacher-box .name{
+  font-size:22px;
+  font-weight:700;
+  color:#be185d;
+}
+.form-panel{
+  background:#ffffff;
+  border-radius:34px;
+  padding:30px;
+  box-shadow:0 16px 36px rgba(148,163,184,.18);
+  border:3px solid #fff;
+}
+.form-panel h2{
+  margin:0 0 8px;
+  color:#334155;
+  font-size:30px;
+}
+.form-panel .hint{
+  margin:0 0 22px;
+  color:#64748b;
+  font-size:17px;
+}
+.input-group{
+  margin-bottom:16px;
+}
+.input-group label{
+  display:block;
+  font-weight:700;
+  margin-bottom:8px;
+  color:#475569;
+}
+.input-group input{
+  width:100%;
+  border:3px solid #dbeafe;
+  border-radius:20px;
+  padding:15px 17px;
+  font-family:inherit;
+  font-size:20px;
+  outline:none;
+  background:#f8fbff;
+}
+.input-group input:focus{
+  border-color:#f9a8d4;
+  background:#fff;
+}
+.start-btn{
+  margin-top:10px;
+  border:0;
+  width:100%;
+  padding:17px 20px;
+  border-radius:999px;
+  font-family:inherit;
+  font-size:22px;
+  font-weight:700;
+  cursor:pointer;
+  background:linear-gradient(135deg,#f9a8d4,#93c5fd,#86efac);
+  color:#334155;
+  box-shadow:0 12px 0 rgba(148,163,184,.22),0 18px 32px rgba(236,72,153,.16);
+}
+.start-btn:hover{transform:translateY(-2px)}
+.notice{
+  margin-top:16px;
+  padding:14px;
+  border-radius:22px;
+  background:#fff7ed;
+  color:#9a3412;
+  text-align:center;
+  font-weight:700;
+}
+
+/* GAME */
+.header{text-align:center;margin-bottom:18px}
+.badge{
+  display:inline-block;
+  padding:8px 18px;
+  border-radius:999px;
+  background:#fff;
+  color:#ec4899;
+  font-weight:700;
+  box-shadow:0 8px 18px rgba(236,72,153,.12);
+}
+h1{
+  margin:12px 0 6px;
+  font-size:clamp(26px,4vw,46px);
+  color:#334155;
+}
+.subtitle{font-size:18px;margin:0;color:#64748b}
+.student-name{
+  margin-top:12px;
+  display:inline-block;
+  background:#fef3c7;
+  padding:9px 18px;
+  border-radius:999px;
+  color:#92400e;
+  font-weight:700;
+}
+.board{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:24px;
+}
+.column{
+  background:#fffafc;
+  border-radius:30px;
+  padding:18px;
+  border:3px dashed #f9a8d4;
+}
+.column:nth-child(2){
+  background:#f7fbff;
+  border-color:#93c5fd;
+}
+.column h2{
+  margin:0 0 14px;
+  text-align:center;
+  font-size:24px;
+}
+.cards{display:grid;gap:12px}
+.card{
+  border:0;
+  width:100%;
+  text-align:left;
+  padding:15px 18px;
+  border-radius:24px;
+  font-family:inherit;
+  font-size:20px;
+  font-weight:700;
+  cursor:pointer;
+  background:#fff;
+  color:#475569;
+  box-shadow:0 8px 0 rgba(148,163,184,.22),0 10px 20px rgba(148,163,184,.12);
+  transition:.15s transform,.15s box-shadow,.15s background;
+}
+.card:hover{transform:translateY(-2px)}
+.card.selected{outline:4px solid #f472b6;background:#fff1f2}
+.card.correct{
+  background:#dcfce7;
+  color:#166534;
+  outline:3px solid #86efac;
+  box-shadow:none;
+  cursor:default;
+}
+.card.wrong{animation:shake .35s;background:#fee2e2}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-8px)}
+  75%{transform:translateX(8px)}
+}
+.emoji{font-size:28px;margin-right:8px}
+.status{
+  margin-top:20px;
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
+.message{
+  flex:1;
+  min-width:240px;
+  background:#fff;
+  border-radius:24px;
+  padding:14px 20px;
+  font-size:22px;
+  font-weight:700;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(148,163,184,.15);
+}
+.score{
+  background:#fef3c7;
+  border-radius:24px;
+  padding:14px 20px;
+  font-size:22px;
+  font-weight:700;
+  color:#92400e;
+  white-space:nowrap;
+}
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+.action{
+  border:0;
+  padding:13px 22px;
+  border-radius:999px;
+  font-family:inherit;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  background:#a7f3d0;
+  color:#065f46;
+  box-shadow:0 8px 0 rgba(16,185,129,.22);
+}
+.action.secondary{
+  background:#bfdbfe;
+  color:#1e3a8a;
+  box-shadow:0 8px 0 rgba(59,130,246,.18);
+}
+.win{
+  display:none;
+  margin-top:20px;
+  text-align:center;
+  padding:22px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#fff7ad,#ffd6e7,#dff7ff);
+  border:4px solid #fff;
+  font-size:28px;
+  font-weight:700;
+  color:#7c2d12;
+}
+.sign-box{
+  margin-top:28px;
+  padding:20px;
+  border-top:2px dashed #f9a8d4;
+  text-align:center;
+  color:#475569;
+}
+.sign-box .sign{font-size:20px;font-weight:700}
+.sign-box .tname{margin-top:8px;font-size:20px;font-weight:700;color:#be185d}
+.sign-box div{font-size:17px}
+.footer{text-align:center;margin-top:18px;color:#64748b;font-size:15px}
+@media(max-width:900px){
+  .login-card{grid-template-columns:1fr}
+  .hero{min-height:auto}
+}
+@media(max-width:780px){
+  .board{grid-template-columns:1fr}
+  .card{font-size:18px}
+}
+</style>
+</head>
+<body>
+  <main class="app">
+    <div class="content">
+
+      <!-- หน้าแรก -->
+      <section id="loginPage" class="login-card">
+        <div class="hero">
+          <div class="school-badge">🌸 สื่อการเรียนรู้วิชาคอมพิวเตอร์ ป.2</div>
+          <h1>เกมจับคู่<br>อุปกรณ์คอมพิวเตอร์</h1>
+          <p>จับคู่ “อุปกรณ์” กับ “หน้าที่” ให้ถูกต้อง</p>
+          <p>ฝึกอ่าน ฝึกคิด และฝึกใช้เมาส์อย่างสนุกสนาน</p>
+
+          <div class="device-row">
+            <div class="device-pill">🖱️</div>
+            <div class="device-pill">⌨️</div>
+            <div class="device-pill">🖥️</div>
+            <div class="device-pill">🖨️</div>
+            <div class="device-pill">🎤</div>
+            <div class="device-pill">🔊</div>
+          </div>
+
+          <div class="teacher-box">
+            <div>จัดทำโดย</div>
+            <div class="name">ครูวิภาพร ป้อมกระโทก</div>
+            <div>ตำแหน่ง ครู วิทยฐานะครูชำนาญการ</div>
+            <div>โรงเรียนวัดเกาะสุวรรณาราม</div>
+            <div>สำนักงานเขตสายไหม กรุงเทพมหานคร</div>
+          </div>
+        </div>
+
+        <div class="form-panel">
+          <h2>ลงชื่อเข้าใช้</h2>
+          <p class="hint">ให้นักเรียนพิมพ์ชื่อก่อนเริ่มเล่นเกมค่ะ</p>
+          <div class="input-group">
+            <label for="studentName">ชื่อนักเรียน</label>
+            <input id="studentName" type="text" placeholder="เช่น ด.ช. ภูมิ / ด.ญ. ใบเตย" />
+          </div>
+          <div class="input-group">
+            <label for="studentClass">ชั้น / ห้อง</label>
+            <input id="studentClass" type="text" placeholder="เช่น ป.2/1" />
+          </div>
+          <button class="start-btn" onclick="startGame()">🌟 เริ่มเล่นเกม</button>
+          <div class="notice" id="loginNotice">กรอกชื่อ แล้วกดเริ่มเล่นเกมได้เลยค่ะ</div>
+        </div>
+      </section>
+
+      <!-- หน้าเกม -->
+      <section id="gamePage" class="hidden">
+        <header class="header">
+          <span class="badge">วิชาคอมพิวเตอร์ ป.2</span>
+          <h1>🎮 เกมจับคู่ อุปกรณ์คอมพิวเตอร์</h1>
+          <p class="subtitle">คลิกเลือก “อุปกรณ์” แล้วคลิก “หน้าที่” ที่ถูกต้อง</p>
+          <div class="student-name" id="showStudent">ผู้เล่น: -</div>
+        </header>
+
+        <section class="board">
+          <div class="column">
+            <h2>💻 อุปกรณ์</h2>
+            <div class="cards" id="devices"></div>
+          </div>
+          <div class="column">
+            <h2>✨ หน้าที่</h2>
+            <div class="cards" id="functions"></div>
+          </div>
+        </section>
+
+        <section class="status">
+          <div class="message" id="message">เลือกอุปกรณ์ก่อนนะคะ 🌸</div>
+          <div class="score" id="score">⭐ คะแนน 0/6</div>
+        </section>
+
+        <div class="actions">
+          <button class="action" onclick="resetGame()">เริ่มใหม่</button>
+          <button class="action secondary" onclick="backHome()">กลับหน้าแรก</button>
+        </div>
+
+        <div class="win" id="win">
+          🏆 เก่งมาก! คุณคือนักคอมพิวเตอร์ตัวน้อย ⭐
+        </div>
+
+        <div class="sign-box">
+          <div class="sign">ลงชื่อ .......................................................</div>
+          <div class="tname">(ครูวิภาพร ป้อมกระโทก)</div>
+          <div>ตำแหน่ง ครู วิทยฐานะครูชำนาญการ</div>
+          <div>โรงเรียนวัดเกาะสุวรรณาราม</div>
+          <div>สำนักงานเขตสายไหม กรุงเทพมหานคร</div>
+        </div>
+
+        <p class="footer">สื่อการเรียนรู้แนวมินิมอลพาสเทล ไม่มีเสียง ใช้เปิดสอนในห้องคอมพิวเตอร์ได้เลย</p>
+      </section>
+
+    </div>
+  </main>
+
+<script>
+const pairs = [
+  {id:"mouse", icon:"🖱️", device:"เมาส์", fn:"ใช้คลิกและเลือกคำสั่ง"},
+  {id:"keyboard", icon:"⌨️", device:"แป้นพิมพ์", fn:"ใช้พิมพ์ข้อความ"},
+  {id:"monitor", icon:"🖥️", device:"จอภาพ", fn:"แสดงภาพ"},
+  {id:"printer", icon:"🖨️", device:"เครื่องพิมพ์", fn:"พิมพ์เอกสาร"},
+  {id:"mic", icon:"🎤", device:"ไมโครโฟน", fn:"รับเสียง"},
+  {id:"speaker", icon:"🔊", device:"ลำโพง", fn:"ส่งเสียง"}
+];
+
+let selectedDevice = null;
+let score = 0;
+
+const devicesEl = document.getElementById("devices");
+const functionsEl = document.getElementById("functions");
+const messageEl = document.getElementById("message");
+const scoreEl = document.getElementById("score");
+const winEl = document.getElementById("win");
+
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+function startGame(){
+  const name = document.getElementById("studentName").value.trim();
+  const room = document.getElementById("studentClass").value.trim();
+  const notice = document.getElementById("loginNotice");
+
+  if(!name){
+    notice.textContent = "กรุณาพิมพ์ชื่อนักเรียนก่อนนะคะ 🌷";
+    document.getElementById("studentName").focus();
+    return;
+  }
+
+  document.getElementById("showStudent").textContent =
+    "ผู้เล่น: " + name + (room ? " | " + room : "");
+
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("gamePage").classList.remove("hidden");
+  render();
+}
+
+function backHome(){
+  document.getElementById("gamePage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+}
+
+function render(){
+  devicesEl.innerHTML = "";
+  functionsEl.innerHTML = "";
+  score = 0;
+  selectedDevice = null;
+  winEl.style.display = "none";
+  messageEl.textContent = "เลือกอุปกรณ์ก่อนนะคะ 🌸";
+  scoreEl.textContent = "⭐ คะแนน 0/6";
+
+  pairs.forEach(p=>{
+    const btn = document.createElement("button");
+    btn.className = "card";
+    btn.dataset.id = p.id;
+    btn.innerHTML = `<span class="emoji">${p.icon}</span>${p.device}`;
+    btn.onclick = () => selectDevice(btn,p.id);
+    devicesEl.appendChild(btn);
+  });
+
+  shuffle(pairs).forEach(p=>{
+    const btn = document.createElement("button");
+    btn.className = "card";
+    btn.dataset.id = p.id;
+    btn.textContent = p.fn;
+    btn.onclick = () => checkAnswer(btn,p.id);
+    functionsEl.appendChild(btn);
+  });
+}
+
+function selectDevice(btn,id){
+  if(btn.classList.contains("correct")) return;
+  document.querySelectorAll("#devices .card").forEach(b=>b.classList.remove("selected"));
+  btn.classList.add("selected");
+  selectedDevice = {id, btn};
+  messageEl.textContent = "ตอนนี้เลือกหน้าที่ที่ตรงกันค่ะ 😊";
+}
+
+function checkAnswer(btn,id){
+  if(btn.classList.contains("correct")) return;
+  if(!selectedDevice){
+    messageEl.textContent = "เลือกอุปกรณ์ทางซ้ายก่อนนะคะ 🌷";
+    return;
+  }
+  if(selectedDevice.id === id){
+    btn.classList.add("correct");
+    selectedDevice.btn.classList.add("correct");
+    selectedDevice.btn.classList.remove("selected");
+    selectedDevice = null;
+    score++;
+    scoreEl.textContent = `⭐ คะแนน ${score}/6`;
+    messageEl.textContent = "เก่งมาก! จับคู่ถูกต้องค่ะ 🎉";
+    if(score === 6){
+      winEl.style.display = "block";
+      messageEl.textContent = "ครบทุกข้อแล้วค่ะ เยี่ยมมาก! 🏆";
+    }
+  }else{
+    btn.classList.add("wrong");
+    messageEl.textContent = "ลองอีกครั้งนะคะ 💕";
+    setTimeout(()=>btn.classList.remove("wrong"),400);
+  }
+}
+function resetGame(){ render(); }
+</script>
+</body>
+</html>
